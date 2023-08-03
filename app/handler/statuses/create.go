@@ -27,19 +27,19 @@ func (h *handler) Create(w http.ResponseWriter, r *http.Request) {
 	status.AccountID = a.ID
 	status.Content = req.Content
 
-	err := h.as.CreateNewStatus(status)
+	err := h.sr.CreateNewStatus(status)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
-	insertedID, err := h.as.LastInserted(r.Context())
+	insertedID, err := h.sr.LastInserted(r.Context())
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
-	addStatus, err := h.as.FindByID(r.Context(), insertedID)
+	addStatus, err := h.sr.FindByID(r.Context(), insertedID)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return

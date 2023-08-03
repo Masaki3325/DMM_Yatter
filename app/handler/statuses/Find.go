@@ -30,7 +30,7 @@ func (h *handler) Find(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	status, err := h.as.FindByID(r.Context(), intid)
+	status, err := h.sr.FindByID(r.Context(), intid)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
