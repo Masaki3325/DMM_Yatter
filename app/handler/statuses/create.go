@@ -10,7 +10,7 @@ import (
 
 // Request body for `POST /v1/statuses`
 type AddRequest struct {
-	content string
+	Content string `json:"content"`
 }
 
 // Handle request for `POST /v1/statuses`
@@ -20,18 +20,13 @@ func (h *handler) Create(w http.ResponseWriter, r *http.Request) {
 	var req AddRequest
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
-		fmt.Print(r.Body)
 		return
 	}
 
 	a := auth.AccountOf(r)
 	status := new(object.Status)
 	status.AccountID = a.ID
-	status.Content = req.content
-	fmt.Println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
-	fmt.Println("😠😠😠😠😠😠😠😠😠😠😠😠😠😠😠😠😠😠😠😠😠😠😠😠😠😠😠😠😠😠😠😠😠😠😠😠😠😠😠😠😠😠😠😠😠😠😠")
-	fmt.Println(status.Content)
-	fmt.Println(req.content)
+	status.Content = req.Content
 
 	err := h.as.CreateNewStatus(status)
 	if err != nil {
