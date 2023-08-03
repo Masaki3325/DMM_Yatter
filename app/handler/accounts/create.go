@@ -31,15 +31,14 @@ func (h *handler) Create(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// panic("Must Implement Account Registration")
-
-	w.Header().Set("Content-Type", "application/json")
-	if err := json.NewEncoder(w).Encode(account); err != nil {
+	err := h.ar.CreateNewAccount(account)
+	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
-	err := h.ar.CreateNewAccount(account)
-	if err != nil {
+	w.Header().Set("Content-Type", "application/json")
+	if err := json.NewEncoder(w).Encode(account); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
