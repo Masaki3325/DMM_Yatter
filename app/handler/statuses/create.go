@@ -28,12 +28,18 @@ func (h *handler) Create(w http.ResponseWriter, r *http.Request) {
 	status := new(object.Status)
 	status.AccountID = a.ID
 	status.Content = req.content
+	fmt.Println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
+	fmt.Println("😠😠😠😠😠😠😠😠😠😠😠😠😠😠😠😠😠😠😠😠😠😠😠😠😠😠😠😠😠😠😠😠😠😠😠😠😠😠😠😠😠😠😠😠😠😠😠")
+	fmt.Println(status.Content)
+	fmt.Println(req.content)
 
 	err := h.as.CreateNewStatus(status)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
+
+	fmt.Println(status)
 	w.Header().Set("Content-Type", "application/json")
 	if err := json.NewEncoder(w).Encode(status); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)

@@ -18,7 +18,7 @@ type handler struct {
 func NewRouter(ar repository.Account, as repository.Status) http.Handler {
 	r := chi.NewRouter()
 
-	h := &handler{}
+	h := &handler{ar, as}
 	r.With(auth.Middleware(ar)).Post("/", h.Create)
 
 	return r
