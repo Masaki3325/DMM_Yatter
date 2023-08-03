@@ -8,8 +8,10 @@ type Status struct {
 	// The internal ID of the status
 	ID int64 `json:"id,omitempty"`
 
+	Account *Account `json:"account,omitempty"`
+
 	// The associated account ID
-	AccountID int64 `json:"account_id" db:"account_id"`
+	AccountID int64 `json:"account_id,omitempty" db:"account_id"`
 
 	// The content of the status
 	Content string `json:"content" db:"content"`

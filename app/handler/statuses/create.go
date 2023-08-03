@@ -52,16 +52,13 @@ func (h *handler) Create(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	statusResponse := StatusResponse{
-		ID:        int(addStatus.ID),
-		Account:   *account,
-		AccountID: int(addStatus.AccountID),
-		Content:   addStatus.Content,
-		CreatedAt: addStatus.CreateAt,
-	}
+	status.ID = addStatus.ID
+	status.Account = account
+	status.CreateAt = addStatus.CreateAt
+	status.AccountID = 0
 
 	w.Header().Set("Content-Type", "application/json")
-	if err := json.NewEncoder(w).Encode(statusResponse); err != nil {
+	if err := json.NewEncoder(w).Encode(status); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
