@@ -33,8 +33,35 @@ func (h *handler) Create(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	insertedID, err := h.as.LastInserted(r.Context())
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	addStatus, err := h.as.FindByID(r.Context(), insertedID)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	userID := status.AccountID
+	account, err := h.ar.FindByID(r.Context(), int(userID))
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	statusResponse := StatusResponse{
+		ID:        int(addStatus.ID),
+		Account:   *account,
+		AccountID: int(addStatus.AccountID),
+		Content:   addStatus.Content,
+		CreatedAt: addStatus.CreateAt,
+	}
+
 	w.Header().Set("Content-Type", "application/json")
-	if err := json.NewEncoder(w).Encode(status); err != nil {
+	if err := json.NewEncoder(w).Encode(statusResponse); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}

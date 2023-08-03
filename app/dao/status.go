@@ -59,3 +59,17 @@ func (r *status) FindByID(ctx context.Context, id int) (*object.Status, error) {
 
 	return entity, nil
 }
+
+func (r *status) LastInserted(ctx context.Context) (int, error) {
+	var insertedID int
+	err := r.db.QueryRowxContext(ctx, "select LAST_INSERT_ID()").Scan(&insertedID)
+	if err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			return -1, nil
+		}
+
+		return -1, fmt.Errorf("failed to find account from db: %w", err)
+	}
+
+	return insertedID, nil
+}
