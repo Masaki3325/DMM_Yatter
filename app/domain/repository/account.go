@@ -12,4 +12,5 @@ type Account interface {
 	FindByID(ctx context.Context, id int) (*object.Account, error)
 	// TODO: Add Other APIs
 	CreateNewAccount(account *object.Account) error
+	UpdateAccount(account *object.Account) error
 }

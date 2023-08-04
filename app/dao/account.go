@@ -74,3 +74,28 @@ func (r *account) CreateNewAccount(account *object.Account) error {
 
 	return nil
 }
+
+func (r *account) UpdateAccount(account *object.Account) error {
+	tx, _ := r.db.Begin()
+	var err error
+	defer func() {
+		switch r := recover(); {
+		case r != nil:
+			tx.Rollback()
+			panic(r)
+		case err != nil:
+			tx.Rollback()
+		}
+	}()
+
+	query := `UPDATE account SET display_name = ?, avatar = ?, header = ?, note = ? WHERE username = ?`
+	if _, err = tx.Exec(query, account.DisplayName, account.Avatar, account.Header, account.Note, account.Username); err != nil {
+		return err
+	}
+
+	if err = tx.Commit(); err != nil {
+		return err
+	}
+
+	return nil
+}

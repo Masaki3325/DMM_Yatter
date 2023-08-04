@@ -3,6 +3,7 @@ package accounts
 import (
 	"net/http"
 	"yatter-backend-go/app/domain/repository"
+	"yatter-backend-go/app/handler/auth"
 
 	"github.com/go-chi/chi/v5"
 )
@@ -18,6 +19,7 @@ func NewRouter(ar repository.Account) http.Handler {
 
 	h := &handler{ar}
 	r.Post("/", h.Create)
+	r.With(auth.Middleware(ar)).Post("/update_credentials", h.Update)
 	r.Get("/{username}", h.Find)
 
 	return r
