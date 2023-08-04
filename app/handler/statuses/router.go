@@ -1,4 +1,4 @@
-package accounts
+package statuses
 
 import (
 	"net/http"
@@ -11,17 +11,16 @@ import (
 // Implementation of handler
 type handler struct {
 	ar repository.Account
+	sr repository.Status
 }
 
 // Create Handler for `/v1/accounts/`
-func NewRouter(ar repository.Account) http.Handler {
+func NewRouter(ar repository.Account, sr repository.Status) http.Handler {
 	r := chi.NewRouter()
 
-	h := &handler{ar}
-	r.Post("/", h.Create)
-	r.With(auth.Middleware(ar)).Post("/update_credentials", h.Update)
-	r.With(auth.Middleware(ar)).Post("/{username}/follow", h.Follow)
-	r.Get("/{username}", h.Find)
+	h := &handler{ar, sr}
+	r.With(auth.Middleware(ar)).Post("/", h.Create)
+	r.Get("/{id}", h.Find)
 
 	return r
 }
