@@ -99,3 +99,36 @@ func (r *account) UpdateAccount(account *object.Account) error {
 
 	return nil
 }
+
+func (r *account) FollowAccount(accountid int, followaccountid int) error {
+	tx, _ := r.db.Begin()
+	var err error
+	defer func() {
+		switch r := recover(); {
+		case r != nil:
+			tx.Rollback()
+			panic(r)
+		case err != nil:
+			tx.Rollback()
+		}
+	}()
+
+	if _, err = tx.Exec(`INSERT INTO relationship (follower_id,followee_id) VALUES (?,?)`, accountid, followaccountid); err != nil {
+		return err
+	}
+	if err = tx.Commit(); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (r *account) CheckFollow(ctx context.Context, accountid int, followaccountid int) (bool, error) {
+	var result bool
+	query := "SELECT EXISTS(SELECT 1 FROM relationship WHERE follower_id = ? AND followee_id = ?)"
+	err := r.db.QueryRowContext(ctx, query, followaccountid, accountid).Scan(&result) // クエリのパラメータを逆にする
+	if err != nil {
+		return false, fmt.Errorf("failed to check follow relationship: %w", err)
+	}
+	return result, nil
+}

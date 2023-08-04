@@ -37,6 +37,11 @@ type Account struct {
 	CreateAt time.Time `json:"create_at,omitempty" db:"create_at"`
 }
 
+type Relationship struct {
+	Follower_id int `json:"follower_id"`
+	Followee_id int `json:"followee_id"`
+}
+
 // Check if given password is match to account's password
 func (a *Account) CheckPassword(pass string) bool {
 	return bcrypt.CompareHashAndPassword([]byte(a.PasswordHash), []byte(pass)) == nil

@@ -54,14 +54,14 @@ func (h *handler) Update(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	addUser, err := h.ar.FindByUsername(r.Context(), account.Username)
+	addedAccount, err := h.ar.FindByUsername(r.Context(), account.Username)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
 	w.Header().Set("Content-Type", "application/json")
-	if err := json.NewEncoder(w).Encode(addUser); err != nil {
+	if err := json.NewEncoder(w).Encode(addedAccount); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}

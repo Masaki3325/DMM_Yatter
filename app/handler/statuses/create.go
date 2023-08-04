@@ -39,7 +39,7 @@ func (h *handler) Create(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	addStatus, err := h.sr.FindByID(r.Context(), insertedID)
+	addedStatus, err := h.sr.FindByID(r.Context(), insertedID)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -52,9 +52,9 @@ func (h *handler) Create(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	status.ID = addStatus.ID
+	status.ID = addedStatus.ID
 	status.Account = account
-	status.CreateAt = addStatus.CreateAt
+	status.CreateAt = addedStatus.CreateAt
 	status.AccountID = 0
 
 	w.Header().Set("Content-Type", "application/json")

@@ -26,8 +26,8 @@ func (h *handler) Find(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	userID := status.AccountID
-	account, err := h.ar.FindByID(r.Context(), int(userID))
+	accountID := status.AccountID
+	account, err := h.ar.FindByID(r.Context(), int(accountID))
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return

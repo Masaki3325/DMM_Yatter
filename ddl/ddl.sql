@@ -17,7 +17,13 @@ CREATE TABLE `status` (
   `create_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   FOREIGN KEY (`account_id`) REFERENCES `account` (`id`)
-)
+);
+
+CREATE TABLE `relationship` (
+  `follower_id` bigint(20) NOT NULL,
+  `followee_id` bigint(20) NOT NULL,
+  PRIMARY KEY (`follower_id`, `followee_id`)
+);
 
 -- CREATE TABLE `attachment` (
 --   `id` bigint(20) NOT NULL AUTO_INCREMENT,
